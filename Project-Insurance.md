@@ -59,7 +59,7 @@ What it does:
 
 Formula:
 
-```
+```txt
 x' = (x − mean) / std
 ```
 
@@ -70,6 +70,87 @@ Used for:
 - SVM
 - KNN
 - Neural networks
+
+**5. Random State Usage**.
+
+Some operations use **randomness**
+(example: `train_test_split`, shuffling data, initializing weights).
+
+Without control, results change every run.
+
+---
+
+### Example WITHOUT `random_state`
+
+```python
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+```
+
+Run this **twice**:
+
+- Train data → different rows
+- Test data → different rows
+- Model accuracy → different
+
+Unstable.
+
+---
+
+### Example WITH `random_state`
+
+```python
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, random_state=42
+)
+```
+
+Run this **100 times**:
+
+- Same rows in train
+- Same rows in test
+- Same output
+
+Stable.
+
+---
+
+### Why this happens
+
+Internally:
+
+```text
+random numbers → data split
+```
+
+`random_state=42`:
+
+```text
+fixed starting point → same random numbers → same split
+```
+
+No magic.
+`42` is just a number.
+
+---
+
+### Real-world analogy
+
+- Shuffling cards **blindfolded** → different order every time
+- Shuffling with **written instructions** → same order every time
+
+---
+
+### When to use
+
+- Learning
+- Debugging
+- Comparing models
+
+### When not required
+
+- Final production runs
 
 ## Exploratory Data Analysis (EDA) Steps
 
